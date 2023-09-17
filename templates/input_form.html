@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GH 궁합 테스트</title>
+    <style>
+        @font-face {
+            font-family: 'AppleSDGothicNeoB';
+            src: url('/static/Apple_산돌고딕_Neo/AppleSDGothicNeoB.ttf') format('truetype');
+        }
+    
+        @font-face {
+            font-family: 'AppleSDGothicNeo';
+            src: url('/static/Apple_산돌고딕_Neo/AppleSDGothicNeoUL.ttf') format('truetype');
+        }
+    
+        body {
+            font-family: 'AppleSDGothicNeo', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        
+        h1 {
+            font-family: 'AppleSDGothicNeoB', sans-serif;
+            color: #053699;
+            font-size: 2.5em;
+        }
+        
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #01397C;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            margin-top: 15px;
+        }
+        
+        #progress-bar-fill {
+            height: 30px;
+            width: 0%;
+            background-color: #01397C;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>GH 궁합 테스트</h1>
+
+    <form id="dataForm" onsubmit="return submitForm();">
+        <label for="user_mbti">당신의 MBTI는 무엇인가요?</label>
+        <input type="text" id="user_mbti" name="user_mbti" required>
+        <br><br>
+        <label for="debate_topic">민트초코 좋아하시나요?</label>
+        <select id="debate_topic" name="debate_topic">
+            <option value="좋아요">좋아요</option>
+            <option value="싫어요">싫어요</option>
+        </select>
+        <br><br>
+        <button type="submit">제출하기</button>
+    </form>
+
+    <div style="text-align:center; margin-top:20px;">
+        <img src="/static/GH_SGNT_BLUE.png" alt="GH Logo" width="250", height="200">
+    </div>
+
+    <div id="loadingBar" style="display: none;">
+        <div class="loader"></div>
+        <div id="progress-bar">
+            <div id="progress-bar-fill" style="width: 0%;">0%</div>
+        </div>
+    </div>
+
+    <script>
+    function submitForm() {
+        document.getElementById('loadingBar').style.display = 'block';
+        updateProgressBar();  // Start progress bar animation
+        var formData = new FormData(document.getElementById('dataForm'));
+        fetch('/process_data', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            window.location.href = data.result_url;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error.message);
+        });
+        return false;
+    }
+
+    // Function to simulate progress bar filling up
+    function updateProgressBar() {
+        let progress = 0;
+        let interval = setInterval(function() {
+            progress += 10;
+            document.getElementById('progress-bar-fill').style.width = progress + '%';
+            document.getElementById('progress-bar-fill').innerText = progress + '%';
+            if (progress >= 100) clearInterval(interval);
+        }, 200);  // Update every 200 milliseconds
+    }
+    </script>
+</body>
+</html>

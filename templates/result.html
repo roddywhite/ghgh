@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        @font-face {
+            font-family: 'AppleSDGothicNeo';
+            src: url('/static/Apple_산돌고딕_Neo/AppleSDGothicNeoUL.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'AppleSDGothicNeoB';
+            src: url('/static/Apple_산돌고딕_Neo/AppleSDGothicNeoB.ttf') format('truetype');
+        }
+        body {
+            font-family: 'AppleSDGothicNeo', sans-serif;
+        }
+    
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left {
+            flex: 70%;
+        }
+        .header-right {
+            flex: 30%;
+            text-align: right;
+        }
+        .gh-logo {
+            width: 150px; /* 로고 크기 조절 */
+        }
+        
+        /* 색 변경 */
+        h2 {
+            font-family: 'AppleSDGothicNeoB', sans-serif;
+            color: #053699;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-container">
+    <div class="header-left">
+        <h2>입력해주신 정보</h2>
+        <p>MBTI: {{ user_mbti }}</p>
+        <p>민트초코 선호 여부: {{ debate_topic }}</p>
+    </div>
+    <div class="header-right">
+        <!-- GH Logo 추가 -->
+        <img src="/static/GH_SGNT_BLUE.png" alt="GH Logo" class="gh-logo">
+    </div>
+</div>
+
+<img src="data:image/png;base64,{{ plot_data }}" alt="Generated Plot" width="1500" height="500">
+
+</body>
+</html>
